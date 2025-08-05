@@ -27,17 +27,22 @@ const NetworkBackground = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Initialize nodes
-    const nodeCount = Math.floor((window.innerWidth * window.innerHeight) / 15000);
-    nodesRef.current = Array.from({ length: nodeCount }, () => ({
+    // Initialize more nodes for better visual effect
+    const nodeCount = Math.floor((window.innerWidth * window.innerHeight) / 8000);
+    nodesRef.current = Array.from({ length: Math.max(nodeCount, 60) }, () => ({
       x: Math.random() * canvas.width,
       y: Math.random() * canvas.height,
-      vx: (Math.random() - 0.5) * 0.5,
-      vy: (Math.random() - 0.5) * 0.5,
+      vx: (Math.random() - 0.5) * 0.8,
+      vy: (Math.random() - 0.5) * 0.8,
     }));
 
     const animate = () => {
-      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      // Create a subtle gradient background
+      const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+      gradient.addColorStop(0, 'rgb(22, 30, 46)');
+      gradient.addColorStop(1, 'rgb(16, 24, 40)');
+      ctx.fillStyle = gradient;
+      ctx.fillRect(0, 0, canvas.width, canvas.height);
 
       // Update and draw nodes
       nodesRef.current.forEach((node, i) => {
@@ -45,9 +50,15 @@ const NetworkBackground = () => {
         node.x += node.vx;
         node.y += node.vy;
 
-        // Bounce off edges
-        if (node.x <= 0 || node.x >= canvas.width) node.vx *= -1;
-        if (node.y <= 0 || node.y >= canvas.height) node.vy *= -1;
+        // Bounce off edges with some randomness
+        if (node.x <= 0 || node.x >= canvas.width) {
+          node.vx *= -1;
+          node.vx += (Math.random() - 0.5) * 0.1;
+        }
+        if (node.y <= 0 || node.y >= canvas.height) {
+          node.vy *= -1;
+          node.vy += (Math.random() - 0.5) * 0.1;
+        }
 
         // Keep nodes in bounds
         node.x = Math.max(0, Math.min(canvas.width, node.x));
@@ -59,10 +70,10 @@ const NetworkBackground = () => {
           const dy = node.y - otherNode.y;
           const distance = Math.sqrt(dx * dx + dy * dy);
 
-          if (distance < 150) {
-            const opacity = 1 - distance / 150;
-            ctx.strokeStyle = `rgba(59, 130, 246, ${opacity * 0.5})`;
-            ctx.lineWidth = 1;
+          if (distance < 180) {
+            const opacity = (1 - distance / 180) * 0.4;
+            ctx.strokeStyle = `rgba(59, 130, 246, ${opacity})`;
+            ctx.lineWidth = opacity > 0.2 ? 1.5 : 1;
             ctx.beginPath();
             ctx.moveTo(node.x, node.y);
             ctx.lineTo(otherNode.x, otherNode.y);
@@ -70,8 +81,17 @@ const NetworkBackground = () => {
           }
         });
 
-        // Draw node
-        ctx.fillStyle = 'rgba(59, 130, 246, 0.8)';
+        // Draw node with glow effect
+        const nodeOpacity = 0.9;
+        
+        // Outer glow
+        ctx.fillStyle = `rgba(59, 130, 246, ${nodeOpacity * 0.3})`;
+        ctx.beginPath();
+        ctx.arc(node.x, node.y, 4, 0, Math.PI * 2);
+        ctx.fill();
+        
+        // Inner node
+        ctx.fillStyle = `rgba(59, 130, 246, ${nodeOpacity})`;
         ctx.beginPath();
         ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
         ctx.fill();
@@ -93,8 +113,8 @@ const NetworkBackground = () => {
   return (
     <canvas
       ref={canvasRef}
-      className="network-canvas"
-      style={{ background: 'transparent' }}
+      className="fixed top-0 left-0 w-full h-full -z-10"
+      style={{ background: 'rgb(22, 30, 46)' }}
     />
   );
 };

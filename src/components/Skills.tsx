@@ -49,18 +49,6 @@ const Skills = () => {
             </div>
           ))}
         </div>
-        
-        <div className="mt-16 fade-in fade-in-delay-3">
-          <div className="bg-gradient-card rounded-xl p-8 text-center glow-hover">
-            <h3 className="text-2xl font-semibold mb-4 text-primary">
-              Research Focus
-            </h3>
-            <p className="text-lg text-muted-foreground">
-              Spiking Neural Networks (SNNs) • Energy-Efficient AI Hardware • 
-              Neuromorphic Computing • Algorithm-Hardware Co-design
-            </p>
-          </div>
-        </div>
       </div>
     </section>
   );

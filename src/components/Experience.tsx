@@ -1,18 +1,6 @@
 const Experience = () => {
   const experiences = [
     {
-      title: "Undergraduate ML Research Assistant",
-      company: "York University, LCRAIN Lab",
-      location: "Toronto, ON",
-      period: "Apr 2025 – Present",
-      description: [
-        "Researching spiking neural networks (SNNs) for energy-efficient AI hardware; focused on converting ANNs/BNNs to spike-based models.",
-        "Using Python tools to simulate SNNs and support algorithm-hardware co-design for neuromorphic systems.",
-        "Analyzing model performance and energy trade-offs in spike-based systems to support efficient ML deployment on emerging hardware."
-      ],
-      type: "current"
-    },
-    {
       title: "Data and Information Discovery Analyst Co-op",
       company: "Teranet Inc.",
       location: "Toronto, ON", 
@@ -107,7 +95,7 @@ const Experience = () => {
               York University – Lassonde School of Engineering, Toronto, ON
             </p>
             <p className="text-sm text-accent">
-              Jan 2023 - Aug 2026 (Expected) • Lassonde Entrance Scholarship
+              Jan 2023 - Aug 2026 (Expected)
             </p>
           </div>
         </div>
